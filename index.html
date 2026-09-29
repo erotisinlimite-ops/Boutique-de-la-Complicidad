@@ -420,6 +420,27 @@
   .kit-name{ font-family:'Playfair Display', serif; font-size:15.5px; color:var(--cream); }
   .kit-price{ font-size:12px; opacity:0.55; margin-top:2px; }
 
+
+  /* ---------- Estados ---------- */
+  .estado{
+    grid-column:1 / -1;
+    text-align:center;
+    font-size:14px;
+    line-height:1.7;
+    opacity:0.7;
+    padding:20px 0 40px;
+    margin:0;
+  }
+  .estado a{ color:var(--gold-soft); }
+  .btn-gold.agotado{
+    opacity:0.45;
+    cursor:default;
+    border-color:var(--line);
+    color:var(--cream);
+  }
+  .btn-gold.agotado:hover{ background:transparent; color:var(--cream); }
+  [hidden]{ display:none !important; }
+
   /* ---------- Pie de página ---------- */
   footer{
     border-top:1px solid var(--line);
@@ -473,7 +494,7 @@
     <p>Un espacio pensado para parejas que quieren explorar con calma, sin ruido y sin apuro. Cada experiencia está curada, no exhibida.</p>
     <div class="hero-line"></div>
     <div class="hero-cta">
-      <a class="btn-solid" href="#promociones">Ver promociones</a>
+      <a class="btn-solid" id="heroPromoBtn" href="#promociones">Ver promociones</a>
       <a class="btn-ghost" href="#catalogo" style="text-decoration:none;">Ver catálogo</a>
     </div>
   </div>
@@ -535,51 +556,16 @@ const CONFIG = {
   whatsapp: "57XXXXXXXXXX",
 
   // Tu usuario de Instagram SIN el "@". Ejemplo: "boutiquecomplicidad". Déjalo vacío ("") para ocultar el enlace.
-  instagram: ""
+  instagram: "",
+
+  // Enlaces CSV de tu Google Sheet (una para cada pestaña). Pégalos entre las comillas.
+  // Mientras estén vacíos, la página muestra productos de ejemplo.
+  hojaProductos: "",
+  hojaPromociones: ""
 };
 
-// =====================================================================
-//  2. PRODUCTOS — EDITA LOS TEXTOS Y PRECIOS DE ESTA SECCIÓN
-//  Para agregar una foto: sube la imagen a la carpeta "img" y escribe
-//  su ruta en el campo imagen, por ejemplo:  imagen: "img/aceite-vela.jpg"
-//  Si dejas imagen vacía ("") se muestra el fondo de color.
-//  Todos los datos de abajo son de EJEMPLO: cámbialos por los reales.
-// =====================================================================
-
-// Kits y promociones (precioAntes = suma de los productos por separado)
-const promociones = [
-  { nombre: "Kit Reconexión", incluye: ["Aceite de Masaje en Vela", "Set de Respiración Compartida"], precioAntes: 104000, precio: 89000, nota: "Promoción del mes", imagen: "" },
-  { nombre: "Kit Primera Vez para Dos", incluye: ["Kit Introductorio para Dos", "Gel Sensorial Base Agua"], precioAntes: 113000, precio: 95000, nota: "Promoción del mes", imagen: "" },
-  { nombre: "Kit Aniversario Completo", incluye: ["Set Aniversario Edición Íntima", "Tarjetas de Complicidad"], precioAntes: 168000, precio: 145000, nota: "Promoción del mes", imagen: "" }
-];
-
-// Productos por experiencia
-const productos = [
-  { nombre: "Aceite de Masaje en Vela", experiencia: "Noches de Reconexión", descripcion: "Se derrite en aceite tibio para masaje. Ambiente, no prisa.", precio: 58000, imagen: "" },
-  { nombre: "Set de Respiración Compartida", experiencia: "Noches de Reconexión", descripcion: "Guía breve + aceite esencial para bajar el ritmo antes de conectar.", precio: 46000, imagen: "" },
-  { nombre: "Gel Sensorial Base Agua", experiencia: "Exploración Sutil", descripcion: "Textura ligera, primer paso para quienes están probando algo nuevo.", precio: 34000, imagen: "" },
-  { nombre: "Kit Introductorio para Dos", experiencia: "Exploración Sutil", descripcion: "Pensado para una primera conversación sin presión, con guía incluida.", precio: 79000, imagen: "" },
-  { nombre: "Set Aniversario Edición Íntima", experiencia: "Especial Aniversarios", descripcion: "Presentación de regalo, para marcar una fecha con intención.", precio: 129000, imagen: "" },
-  { nombre: "Tarjetas de Complicidad", experiencia: "Especial Aniversarios", descripcion: "36 preguntas para abrir conversación antes de la noche.", precio: 39000, imagen: "" }
-];
-
-// Catálogo completo por categoría
-const productosCategoria = [
-  { nombre: "Gel Lubricante Base Agua 100ml", categoria: "Lubricante", descripcion: "Textura ligera, compatible con todo tipo de preservativo.", precio: 32000, imagen: "" },
-  { nombre: "Lubricante Silicona Larga Duración", categoria: "Lubricante", descripcion: "No se seca con el tiempo, ideal para sesiones más largas.", precio: 45000, imagen: "" },
-  { nombre: "Conjunto Encaje Bordado", categoria: "Lencería", descripcion: "Silueta favorecedora, encaje suave al tacto.", precio: 68000, imagen: "" },
-  { nombre: "Body Sensual con Transparencias", categoria: "Lencería", descripcion: "Diseño de una pieza, pensado para ocasiones especiales.", precio: 74000, imagen: "" },
-  { nombre: "Kit de Ataduras en Satín", categoria: "Bondage", descripcion: "Material suave, ideal para quienes están explorando esto por primera vez.", precio: 56000, imagen: "" },
-  { nombre: "Antifaz de Seda", categoria: "Bondage", descripcion: "Aísla el sentido de la vista para intensificar el resto.", precio: 29000, imagen: "" },
-  { nombre: "Vibrador de Doble Estimulación", categoria: "Doble Estimulación", descripcion: "Dos puntos de contacto simultáneo, control de intensidad progresivo.", precio: 118000, imagen: "" },
-  { nombre: "Set de Doble Estimulación en Pareja", categoria: "Doble Estimulación", descripcion: "Pensado para uso compartido, silencioso y de bajo mantenimiento.", precio: 135000, imagen: "" },
-  { nombre: "Succionador de Intensidad Regulable", categoria: "Succionadores", descripcion: "Varios niveles de succión, silencioso y resistente al agua.", precio: 98000, imagen: "" },
-  { nombre: "Succionador Compacto de Viaje", categoria: "Succionadores", descripcion: "Tamaño discreto, pensado para llevar de viaje.", precio: 79000, imagen: "" },
-  { nombre: "Manga de Estimulación Texturizada", categoria: "Para Hombres", descripcion: "Textura interior variable, fácil de limpiar y guardar.", precio: 89000, imagen: "" },
-  { nombre: "Anillo Vibrador para Pareja", categoria: "Para Hombres", descripcion: "Uso compartido, pensado para aumentar la sensibilidad de ambos.", precio: 42000, imagen: "" }
-];
-
-const experiencias = [
+// Las tres experiencias que aparecen como pestañas. Se pueden editar aquí.
+const experienciasBase = [
   { id: "Noches de Reconexión", desc: "Para parejas con historia, que quieren volver a mirarse." },
   { id: "Exploración Sutil", desc: "Primeros pasos, sin prisa y sin etiquetas." },
   { id: "Especial Aniversarios", desc: "Para fechas que merecen algo con intención." }
@@ -634,55 +620,196 @@ const situaciones = [
 ];
 
 // =====================================================================
+//  2. DATOS DE EJEMPLO — se muestran solo mientras no conectes tu Google Sheet
+// =====================================================================
+const ejemploProductos = [
+  { nombre: "Aceite de Masaje en Vela", descripcion: "Se derrite en aceite tibio para masaje. Ambiente, no prisa.", precio: 58000, categoria: "Ambiente", experiencia: "Noches de Reconexión", imagen: "", agotado: false },
+  { nombre: "Set de Respiración Compartida", descripcion: "Guía breve + aceite esencial para bajar el ritmo antes de conectar.", precio: 46000, categoria: "Ambiente", experiencia: "Noches de Reconexión", imagen: "", agotado: false },
+  { nombre: "Gel Sensorial Base Agua", descripcion: "Textura ligera, primer paso para quienes están probando algo nuevo.", precio: 34000, categoria: "Lubricante", experiencia: "Exploración Sutil", imagen: "", agotado: false },
+  { nombre: "Kit Introductorio para Dos", descripcion: "Pensado para una primera conversación sin presión, con guía incluida.", precio: 79000, categoria: "Kits", experiencia: "Exploración Sutil", imagen: "", agotado: false },
+  { nombre: "Set Aniversario Edición Íntima", descripcion: "Presentación de regalo, para marcar una fecha con intención.", precio: 129000, categoria: "Kits", experiencia: "Especial Aniversarios", imagen: "", agotado: false },
+  { nombre: "Tarjetas de Complicidad", descripcion: "36 preguntas para abrir conversación antes de la noche.", precio: 39000, categoria: "Juegos", experiencia: "Especial Aniversarios", imagen: "", agotado: false },
+  { nombre: "Gel Lubricante Base Agua 100ml", descripcion: "Textura ligera, compatible con todo tipo de preservativo.", precio: 32000, categoria: "Lubricante", experiencia: "", imagen: "", agotado: false },
+  { nombre: "Conjunto Encaje Bordado", descripcion: "Silueta favorecedora, encaje suave al tacto.", precio: 68000, categoria: "Lencería", experiencia: "", imagen: "", agotado: false },
+  { nombre: "Kit de Ataduras en Satín", descripcion: "Material suave, ideal para quienes están explorando esto por primera vez.", precio: 56000, categoria: "Bondage", experiencia: "", imagen: "", agotado: false },
+  { nombre: "Vibrador de Doble Estimulación", descripcion: "Dos puntos de contacto simultáneo, control de intensidad progresivo.", precio: 118000, categoria: "Doble Estimulación", experiencia: "", imagen: "", agotado: false },
+  { nombre: "Succionador de Intensidad Regulable", descripcion: "Varios niveles de succión, silencioso y resistente al agua.", precio: 98000, categoria: "Succionadores", experiencia: "", imagen: "", agotado: false },
+  { nombre: "Anillo Vibrador para Pareja", descripcion: "Uso compartido, pensado para aumentar la sensibilidad de ambos.", precio: 42000, categoria: "Para Hombres", experiencia: "", imagen: "", agotado: false }
+];
+
+const ejemploPromociones = [
+  { nombre: "Kit Reconexión", incluye: ["Aceite de Masaje en Vela", "Set de Respiración Compartida"], precioAntes: 104000, precio: 89000, nota: "Promoción del mes", imagen: "" },
+  { nombre: "Kit Primera Vez para Dos", incluye: ["Kit Introductorio para Dos", "Gel Sensorial Base Agua"], precioAntes: 113000, precio: 95000, nota: "Promoción del mes", imagen: "" },
+  { nombre: "Kit Aniversario Completo", incluye: ["Set Aniversario Edición Íntima", "Tarjetas de Complicidad"], precioAntes: 168000, precio: 145000, nota: "Promoción del mes", imagen: "" }
+];
+
+// =====================================================================
 //  3. FUNCIONES DEL SITIO — NO NECESITAS TOCAR DE AQUÍ PARA ABAJO
 // =====================================================================
 const waConfigurado = /^\d{10,15}$/.test(CONFIG.whatsapp);
 
+let productos = [];
+let promociones = [];
+let experiencias = [];
+let categorias = [];
+let experienciaActiva = "";
+let categoriaActiva = "Todas";
+
+// ---------- Utilidades ----------
+function normalizar(t){
+  return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/\s+/g, "_");
+}
+function esc(t){
+  return String(t == null ? "" : t).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+}
 function waURL(mensaje){
   return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 }
-
 function formatoPrecio(v){
   return v.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
 }
+function precioTexto(v){
+  return v > 0 ? formatoPrecio(v) : "Consultar precio";
+}
+function parsePrecio(v){
+  const limpio = String(v || "").replace(/[.,]\d{1,2}$/, "").replace(/\D/g, "");
+  return parseInt(limpio, 10) || 0;
+}
+function esSi(v){
+  return ["si", "s", "1", "true", "x", "yes"].includes(normalizar(v));
+}
+function estaActivo(o){
+  const v = normalizar(o.activo || "si");
+  return !["no", "n", "0", "false"].includes(v);
+}
 
+// Convierte enlaces de Google Drive en enlaces que se pueden mostrar como imagen
+function urlImagen(v){
+  v = String(v || "").trim();
+  if (!v) return "";
+  if (v.includes("drive.google.com")){
+    const m = v.match(/\/d\/([\w-]+)/) || v.match(/[?&]id=([\w-]+)/);
+    if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`;
+  }
+  return v;
+}
+
+// ---------- Lectura de Google Sheets (CSV) ----------
+function parseCSV(texto){
+  texto = texto.replace(/^\uFEFF/, "");
+  const filas = [];
+  let fila = [], campo = "", enComillas = false;
+  for (let i = 0; i < texto.length; i++){
+    const c = texto[i];
+    if (enComillas){
+      if (c === '"'){
+        if (texto[i + 1] === '"'){ campo += '"'; i++; }
+        else enComillas = false;
+      } else campo += c;
+    } else if (c === '"'){
+      enComillas = true;
+    } else if (c === ","){
+      fila.push(campo); campo = "";
+    } else if (c === "\n" || c === "\r"){
+      if (c === "\r" && texto[i + 1] === "\n") i++;
+      fila.push(campo); campo = "";
+      filas.push(fila); fila = [];
+    } else campo += c;
+  }
+  if (campo !== "" || fila.length){ fila.push(campo); filas.push(fila); }
+  return filas;
+}
+
+function filasAObjetos(filas){
+  if (!filas.length) return [];
+  const claves = filas[0].map(normalizar);
+  return filas.slice(1)
+    .filter(f => f.some(c => c.trim() !== ""))
+    .map(f => {
+      const o = {};
+      claves.forEach((k, i) => { o[k] = (f[i] || "").trim(); });
+      return o;
+    });
+}
+
+async function cargarHoja(url){
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error("Error " + res.status);
+  return filasAObjetos(parseCSV(await res.text()));
+}
+
+function aProducto(o){
+  return {
+    nombre: o.nombre,
+    descripcion: o.descripcion || "",
+    precio: parsePrecio(o.precio),
+    categoria: o.categoria || "",
+    experiencia: o.experiencia || "",
+    imagen: urlImagen(o.imagen),
+    agotado: esSi(o.agotado)
+  };
+}
+
+function aPromo(o){
+  const precio = parsePrecio(o.precio);
+  return {
+    nombre: o.nombre,
+    incluye: (o.incluye || "").split("|").map(s => s.trim()).filter(Boolean),
+    precioAntes: parsePrecio(o.precio_antes),
+    precio: precio,
+    nota: o.nota || "",
+    imagen: urlImagen(o.imagen)
+  };
+}
+
+// ---------- Tarjetas ----------
 function arteHTML(imagen, nombre, badge){
-  const img = imagen ? `<img src="${imagen}" alt="${nombre}" loading="lazy">` : "";
-  const b = badge ? `<span class="badge">${badge}</span>` : "";
+  const img = imagen ? `<img src="${esc(imagen)}" alt="${esc(nombre)}" loading="lazy" referrerpolicy="no-referrer">` : "";
+  const b = badge ? `<span class="badge">${esc(badge)}</span>` : "";
   return `<div class="card-art">${img}${b}</div>`;
 }
 
 function cardProductoHTML(p){
-  const mensaje = `Hola, me interesa: ${p.nombre} (${formatoPrecio(p.precio)})`;
+  const mensaje = p.precio > 0
+    ? `Hola, me interesa: ${p.nombre} (${formatoPrecio(p.precio)})`
+    : `Hola, me interesa: ${p.nombre}. ¿Me confirmas el precio?`;
+  const boton = p.agotado
+    ? `<span class="btn-gold agotado">Agotado</span>`
+    : `<a class="btn-gold" data-wa href="${waURL(mensaje)}" target="_blank" rel="noopener">Pedir</a>`;
   return `
     <div class="card">
-      ${arteHTML(p.imagen, p.nombre)}
+      ${arteHTML(p.imagen, p.nombre, p.agotado ? "Agotado" : "")}
       <div class="card-body">
-        <h3 class="card-name">${p.nombre}</h3>
-        <p class="card-desc">${p.descripcion}</p>
+        <h3 class="card-name">${esc(p.nombre)}</h3>
+        <p class="card-desc">${esc(p.descripcion)}</p>
         <div class="card-foot">
-          <div class="price">${formatoPrecio(p.precio)}<small>precio cliente</small></div>
-          <a class="btn-gold" data-wa href="${waURL(mensaje)}" target="_blank" rel="noopener">Pedir</a>
+          <div class="price">${precioTexto(p.precio)}<small>precio cliente</small></div>
+          ${boton}
         </div>
       </div>
     </div>`;
+}
+
+function estadoHTML(texto){
+  return `<p class="estado">${texto}</p>`;
 }
 
 // ---------- Promociones ----------
 function renderPromos(){
   const cont = document.getElementById("promoGrid");
   cont.innerHTML = promociones.map(k => {
-    const descuento = Math.round((1 - k.precio / k.precioAntes) * 100);
-    const mensaje = `Hola, quiero la promoción: ${k.nombre} (${formatoPrecio(k.precio)})`;
+    const tieneAntes = k.precioAntes > k.precio && k.precio > 0;
+    const descuento = tieneAntes ? Math.round((1 - k.precio / k.precioAntes) * 100) : 0;
+    const mensaje = `Hola, quiero la promoción: ${k.nombre} (${precioTexto(k.precio)})`;
     return `
     <div class="card">
-      ${arteHTML(k.imagen, k.nombre, `-${descuento}%`)}
+      ${arteHTML(k.imagen, k.nombre, descuento ? `-${descuento}%` : "")}
       <div class="card-body">
-        <h3 class="card-name">${k.nombre}</h3>
-        <ul class="includes">${k.incluye.map(i => `<li>${i}</li>`).join("")}</ul>
-        ${k.nota ? `<p class="promo-note">${k.nota}</p>` : ""}
+        <h3 class="card-name">${esc(k.nombre)}</h3>
+        <ul class="includes">${k.incluye.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+        ${k.nota ? `<p class="promo-note">${esc(k.nota)}</p>` : ""}
         <div class="card-foot">
-          <div class="price"><span class="price-old">${formatoPrecio(k.precioAntes)}</span>${formatoPrecio(k.precio)}</div>
+          <div class="price">${tieneAntes ? `<span class="price-old">${formatoPrecio(k.precioAntes)}</span>` : ""}${precioTexto(k.precio)}</div>
           <a class="btn-gold" data-wa href="${waURL(mensaje)}" target="_blank" rel="noopener">Pedir kit</a>
         </div>
       </div>
@@ -691,14 +818,22 @@ function renderPromos(){
 }
 
 // ---------- Experiencias ----------
-let experienciaActiva = experiencias[0].id;
+function calcularExperiencias(){
+  const lista = experienciasBase.map(e => ({ ...e }));
+  productos.forEach(p => {
+    if (p.experiencia && !lista.some(e => normalizar(e.id) === normalizar(p.experiencia))){
+      lista.push({ id: p.experiencia, desc: "" });
+    }
+  });
+  return lista.filter(e => productos.some(p => normalizar(p.experiencia) === normalizar(e.id)));
+}
 
 function renderTabs(){
   const cont = document.getElementById("expTabs");
   cont.innerHTML = experiencias.map(e => `
-    <button type="button" class="exp-tab ${e.id === experienciaActiva ? 'active' : ''}" data-exp="${e.id}" aria-pressed="${e.id === experienciaActiva}">
-      <span class="exp-name">${e.id}</span>
-      <span class="exp-desc">${e.desc}</span>
+    <button type="button" class="exp-tab ${e.id === experienciaActiva ? 'active' : ''}" data-exp="${esc(e.id)}" aria-pressed="${e.id === experienciaActiva}">
+      <span class="exp-name">${esc(e.id)}</span>
+      <span class="exp-desc">${esc(e.desc)}</span>
     </button>
   `).join("");
   cont.querySelectorAll(".exp-tab").forEach(tab => {
@@ -712,17 +847,25 @@ function renderTabs(){
 
 function renderGrid(){
   const cont = document.getElementById("grid");
-  cont.innerHTML = productos.filter(p => p.experiencia === experienciaActiva).map(cardProductoHTML).join("");
+  cont.innerHTML = productos
+    .filter(p => normalizar(p.experiencia) === normalizar(experienciaActiva))
+    .map(cardProductoHTML).join("");
 }
 
 // ---------- Catálogo por categoría ----------
-const categorias = ["Todas", ...new Set(productosCategoria.map(p => p.categoria))];
-let categoriaActiva = "Todas";
+function calcularCategorias(){
+  const vistas = new Map();
+  productos.forEach(p => {
+    const k = normalizar(p.categoria);
+    if (k && !vistas.has(k)) vistas.set(k, p.categoria);
+  });
+  return ["Todas", ...vistas.values()];
+}
 
 function renderCatFiltros(){
   const cont = document.getElementById("catFilters");
   cont.innerHTML = categorias.map(cat => `
-    <button type="button" class="cat-filter-btn ${cat === categoriaActiva ? 'active' : ''}" data-cat="${cat}" aria-pressed="${cat === categoriaActiva}">${cat}</button>
+    <button type="button" class="cat-filter-btn ${cat === categoriaActiva ? 'active' : ''}" data-cat="${esc(cat)}" aria-pressed="${cat === categoriaActiva}">${esc(cat)}</button>
   `).join("");
   cont.querySelectorAll(".cat-filter-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -735,7 +878,9 @@ function renderCatFiltros(){
 
 function renderCatGrid(){
   const cont = document.getElementById("catGrid");
-  const lista = categoriaActiva === "Todas" ? productosCategoria : productosCategoria.filter(p => p.categoria === categoriaActiva);
+  const lista = categoriaActiva === "Todas"
+    ? productos
+    : productos.filter(p => normalizar(p.categoria) === normalizar(categoriaActiva));
   cont.innerHTML = lista.map(cardProductoHTML).join("");
 }
 
@@ -818,12 +963,59 @@ if (CONFIG.instagram){
 })();
 
 // ---------- Arranque ----------
-renderPromos();
-renderTabs();
-renderGrid();
-renderCatFiltros();
-renderCatGrid();
-renderSituaciones();
+async function iniciar(){
+  const usaHoja = Boolean(CONFIG.hojaProductos || CONFIG.hojaPromociones);
+  const mensajeError = estadoHTML(`No pudimos cargar el catálogo en este momento. <a href="${waURL("Hola, quiero ver el catálogo.")}" data-wa target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te lo enviamos.`);
+  let huboError = false;
+
+  if (!usaHoja){
+    productos = ejemploProductos;
+    promociones = ejemploPromociones;
+  } else {
+    document.getElementById("catGrid").innerHTML = estadoHTML("Cargando catálogo…");
+    try {
+      const [filasProd, filasPromo] = await Promise.all([
+        CONFIG.hojaProductos ? cargarHoja(CONFIG.hojaProductos) : Promise.resolve([]),
+        CONFIG.hojaPromociones ? cargarHoja(CONFIG.hojaPromociones) : Promise.resolve([])
+      ]);
+      productos = filasProd.filter(estaActivo).map(aProducto).filter(p => p.nombre);
+      promociones = filasPromo.filter(estaActivo).map(aPromo).filter(p => p.nombre);
+    } catch (err){
+      console.error("No se pudo leer la hoja de Google Sheets:", err);
+      huboError = true;
+    }
+  }
+
+  experiencias = calcularExperiencias();
+  experienciaActiva = experiencias.length ? experiencias[0].id : "";
+  categorias = calcularCategorias();
+
+  // Promociones: si no hay, se ocultan la sección y el botón del inicio
+  const hayPromos = promociones.length > 0;
+  document.getElementById("promociones").hidden = !hayPromos;
+  document.getElementById("heroPromoBtn").hidden = !hayPromos;
+  if (hayPromos) renderPromos();
+
+  // Experiencias: si ningún producto tiene experiencia, se oculta la sección
+  document.getElementById("experiencias").hidden = experiencias.length === 0;
+  if (experiencias.length){ renderTabs(); renderGrid(); }
+
+  // Catálogo completo
+  if (huboError){
+    document.getElementById("catFilters").innerHTML = "";
+    document.getElementById("catGrid").innerHTML = mensajeError;
+  } else if (!productos.length){
+    document.getElementById("catFilters").innerHTML = "";
+    document.getElementById("catGrid").innerHTML = estadoHTML("Estamos actualizando el catálogo. Vuelve pronto.");
+  } else {
+    renderCatFiltros();
+    renderCatGrid();
+  }
+
+  renderSituaciones();
+}
+
+iniciar();
 </script>
 
 </body>

@@ -477,7 +477,7 @@
   html{scroll-padding-top:56px;}
   .topnav{
     position:sticky; top:0; z-index:50;
-    display:flex; justify-content:center; gap:6px;
+    display:flex; justify-content:flex-start; gap:6px;
     background:rgba(11,10,12,0.92);
     backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
@@ -485,6 +485,8 @@
     overflow-x:auto; scrollbar-width:none;
   }
   .topnav::-webkit-scrollbar{display:none;}
+  .topnav a:first-child{margin-left:auto;}
+  .topnav a:last-child{margin-right:auto;}
   .topnav a{
     flex:0 0 auto;
     padding:15px 14px 13px;
@@ -496,6 +498,13 @@
   .topnav a:hover, .topnav a.on{ color:var(--gold-soft); border-bottom-color:var(--gold); opacity:1; }
   .topnav a[hidden]{display:none;}
 
+  .aviso{
+    display:block; text-align:center; text-decoration:none;
+    background:linear-gradient(90deg,#C9A24C,#E4C878,#C9A24C); color:#1A1416;
+    font-size:12.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
+    padding:10px 16px; line-height:1.4;
+  }
+  .aviso[hidden]{display:none;}
   .hero{ padding:64px 0 52px; }
   .eyebrow{ margin-bottom:16px; }
   .hero-cta{ margin-top:26px; }
@@ -587,6 +596,8 @@
   </div>
 </div>
 
+<a class="aviso" id="aviso" data-wa href="#" target="_blank" rel="noopener" hidden></a>
+
 <nav class="topnav" id="topnav" aria-label="Secciones">
   <a href="#promociones" id="navPromos">Kits</a>
   <a href="#experiencias" id="navExp">Experiencias</a>
@@ -670,6 +681,14 @@ const CONFIG = {
   // Enlaces CSV de tu Google Sheet (una para cada pestaña). Pégalos entre las comillas.
   // Mientras estén vacíos, la página muestra productos de ejemplo.
   hojaProductos: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQaTZRgrbRfaGSilYs6smyUu0iegkjje5r02kiPpq5GTZf5RGIEmHMR6lD8dxbPc1olOXNyB_bLChHS/pub?gid=844588590&single=true&output=csv",
+  // Aviso de promoción arriba de la página. Déjalo con texto vacío ("") para ocultarlo.
+  // "hasta" = último día en que se muestra (AAAA-MM-DD); después desaparece solo.
+  aviso: {
+    texto: "Martes 27 de octubre · 30% de descuento en torsos y dildos CamToyz · Solo ese día",
+    hasta: "2026-10-27",
+    mensaje: "Hola, quiero aprovechar el 30% de descuento en torsos y dildos CamToyz"
+  },
+
   hojaPromociones: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQaTZRgrbRfaGSilYs6smyUu0iegkjje5r02kiPpq5GTZf5RGIEmHMR6lD8dxbPc1olOXNyB_bLChHS/pub?gid=1830740442&single=true&output=csv"
 };
 
@@ -1059,6 +1078,21 @@ function mostrarResultado(s){
   el.classList.add("visible");
   el.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
+
+// ---------- Aviso de promoción ----------
+(function(){
+  const a = CONFIG.aviso;
+  if (!a || !a.texto) return;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  if (a.hasta){
+    const fin = new Date(a.hasta + "T23:59:59");
+    if (new Date() > fin) return;
+  }
+  const el = document.getElementById("aviso");
+  el.textContent = a.texto;
+  el.href = waURL(a.mensaje || a.texto);
+  el.hidden = false;
+})();
 
 // ---------- WhatsApp e Instagram ----------
 document.getElementById("waFloat").href = waURL("Hola, quiero más información sobre los productos.");

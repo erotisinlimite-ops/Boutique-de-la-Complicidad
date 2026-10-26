@@ -281,6 +281,7 @@
     margin:0 0 6px;
   }
   .card-desc{
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
     font-size:12px;
     color:var(--cream);
     opacity:0.55;
@@ -620,6 +621,7 @@
     <p class="section-sub">Navega por momento, no por producto</p>
     <div class="exp-tabs" id="expTabs"></div>
     <div class="grid" id="grid"></div>
+    <div class="ver-mas-wrap" id="verMasExpWrap" hidden><button type="button" class="ver-mas" id="verMasExp">Ver más</button></div>
   </div>
 </section>
 
@@ -952,12 +954,20 @@ function renderTabs(){
   });
 }
 
-function renderGrid(){
+let expVisibles = 6;
+function renderGrid(reiniciar = true){
+  if (reiniciar) expVisibles = 6;
   const cont = document.getElementById("grid");
-  cont.innerHTML = productos
-    .filter(p => normalizar(p.experiencia) === normalizar(experienciaActiva))
-    .map(cardProductoHTML).join("");
+  const lista = productos.filter(p => normalizar(p.experiencia) === normalizar(experienciaActiva));
+  cont.innerHTML = lista.slice(0, expVisibles).map(cardProductoHTML).join("");
+  const resta = lista.length - expVisibles;
+  document.getElementById("verMasExpWrap").hidden = resta <= 0;
+  document.getElementById("verMasExp").textContent = `Ver más (${resta})`;
 }
+document.getElementById("verMasExp").addEventListener("click", () => {
+  expVisibles += 6;
+  renderGrid(false);
+});
 
 // ---------- Catálogo por categoría ----------
 function calcularCategorias(){

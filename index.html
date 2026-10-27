@@ -652,6 +652,11 @@
   @media (min-width:821px){
     .exp-desc-line{ display:none; }
   }
+  .cats-esp{ padding:48px 0 8px; }
+  .cats-esp-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-top:22px; }
+  .cats-esp-grid a{ display:block; text-decoration:none; text-align:center; padding:14px 12px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--cream); font-size:13.5px; transition:.2s; }
+  .cats-esp-grid a span{ display:block; color:var(--gold-soft); font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px; }
+  .cats-esp-grid a:hover{ border-color:var(--gold); background:var(--panel-2); }
 </style>
 </head>
 <body class="locked">
@@ -732,6 +737,14 @@
       <div class="situaciones" id="situaciones"></div>
       <div class="resultado" id="resultado" aria-live="polite"></div>
     </div>
+  </div>
+</section>
+
+<section class="cats-esp" id="catalogos-especiales">
+  <div class="wrap">
+    <p class="section-title">Catálogos completos, con asesoría</p>
+    <p class="section-sub">¿Buscas algo más específico? Pide el catálogo que te interesa y te lo enviamos por WhatsApp, junto con una recomendación personalizada.</p>
+    <div class="cats-esp-grid" id="catsEsp"></div>
   </div>
 </section>
 
@@ -1427,6 +1440,11 @@ async function iniciar(){
 }
 
 iniciar();
+(function(){
+  const lista=[["Torsos y dildos realistas","torsos y dildos realistas"],["CamToyz","CamToyz"],["Estimulación clitorial","estimulación clitorial"],["Masturbadores","masturbadores"],["Lencería","lencería"],["Bondage","bondage"],["Lubricantes y cosméticos","lubricantes y cosméticos"],["Bienestar sexual","bienestar sexual"]];
+  const box=document.getElementById('catsEsp'); if(!box) return;
+  box.innerHTML=lista.map(([t,q])=>'<a target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent('Hola, quiero ver el catálogo de '+q)+'">'+t+'<span>Pedir por WhatsApp</span></a>').join('');
+})();
 </script>
 
 </body>

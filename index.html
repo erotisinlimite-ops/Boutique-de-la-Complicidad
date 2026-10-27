@@ -521,6 +521,22 @@
   .confesionario{ padding:48px 0 56px; }
   footer{ padding-top:10px; }
 
+  .buscador{ position:relative; max-width:460px; margin:0 auto 18px; }
+  .buscador input{
+    width:100%; background:var(--panel); color:var(--cream);
+    border:1px solid var(--line); border-radius:0;
+    padding:13px 44px 13px 18px; font-family:inherit; font-size:14px; font-weight:300;
+    transition:border-color .2s;
+  }
+  .buscador input::placeholder{ color:var(--cream); opacity:.45; }
+  .buscador input:focus{ outline:none; border-color:var(--gold); }
+  .buscador input::-webkit-search-cancel-button{ display:none; }
+  .buscador button{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%);
+    background:none; border:0; color:var(--gold-soft); font-size:24px; line-height:1;
+    padding:6px 12px; cursor:pointer;
+  }
+  .buscador button[hidden]{display:none;}
   .ver-mas-wrap{ display:flex; justify-content:center; padding:0 0 44px; margin-top:-8px; }
   .ver-mas-wrap[hidden]{display:none;}
   .ver-mas{
@@ -641,6 +657,10 @@
   <div class="wrap">
     <p class="section-title">Catálogo completo</p>
     <p class="section-sub">Si ya sabes qué buscas, navega por categoría</p>
+    <div class="buscador" id="buscadorWrap">
+      <input type="search" id="buscador" placeholder="Busca por nombre: lubricante, anillo, succionador…" autocomplete="off" aria-label="Buscar en el catálogo">
+      <button type="button" id="buscadorLimpiar" aria-label="Borrar búsqueda" hidden>&times;</button>
+    </div>
     <div class="cat-filters" id="catFilters"></div>
     <div class="grid" id="catGrid"></div>
     <div class="ver-mas-wrap" id="verMasWrap" hidden><button type="button" class="ver-mas" id="verMas">Ver más productos</button></div>
@@ -1015,18 +1035,44 @@ function renderCatFiltros(){
 
 const PASO_CAT = 6;
 let catVisibles = PASO_CAT;
+let textoBusqueda = "";
+function coincide(p, q){
+  if (!q) return true;
+  const hay = normalizar([p.nombre, p.descripcion, p.categoria].join(" ")).replace(/_/g, " ");
+  return q.split(" ").every(w => hay.includes(w));
+}
 function renderCatGrid(reiniciar = true){
   if (reiniciar) catVisibles = PASO_CAT;
   const cont = document.getElementById("catGrid");
-  const lista = categoriaActiva === "Todas"
+  const q = normalizar(textoBusqueda).replace(/_/g, " ");
+  let lista = categoriaActiva === "Todas"
     ? productos
     : productos.filter(p => normalizar(p.categoria) === normalizar(categoriaActiva));
+  lista = lista.filter(p => coincide(p, q));
+  if (!lista.length){
+    const msg = q
+      ? `No encontramos "${esc(textoBusqueda.trim())}" en ${categoriaActiva === "Todas" ? "el catálogo" : esc(categoriaActiva)}. <a href="${waURL("Hola, estoy buscando: " + textoBusqueda.trim())}" data-wa target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y te ayudamos a encontrarlo.`
+      : "Aún no hay productos en esta categoría.";
+    cont.innerHTML = estadoHTML(msg);
+    document.getElementById("verMasWrap").hidden = true;
+    return;
+  }
   cont.innerHTML = lista.slice(0, catVisibles).map(cardProductoHTML).join("");
   const resta = lista.length - catVisibles;
   const wrap = document.getElementById("verMasWrap");
   wrap.hidden = resta <= 0;
   document.getElementById("verMas").textContent = `Ver más productos (${resta})`;
 }
+(function(){
+  const inp = document.getElementById("buscador"), x = document.getElementById("buscadorLimpiar");
+  let t;
+  inp.addEventListener("input", () => {
+    x.hidden = !inp.value;
+    clearTimeout(t);
+    t = setTimeout(() => { textoBusqueda = inp.value; renderCatGrid(); }, 150);
+  });
+  x.addEventListener("click", () => { inp.value = ""; x.hidden = true; textoBusqueda = ""; renderCatGrid(); inp.focus(); });
+})();
 document.getElementById("verMas").addEventListener("click", () => {
   catVisibles += PASO_CAT * 2;
   renderCatGrid(false);
@@ -1180,9 +1226,11 @@ async function iniciar(){
   // Catálogo completo
   if (huboError){
     document.getElementById("catFilters").innerHTML = "";
+    document.getElementById("buscadorWrap").hidden = true;
     document.getElementById("catGrid").innerHTML = mensajeError;
   } else if (!productos.length){
     document.getElementById("catFilters").innerHTML = "";
+    document.getElementById("buscadorWrap").hidden = true;
     document.getElementById("catGrid").innerHTML = estadoHTML("Estamos actualizando el catálogo. Vuelve pronto.");
   } else {
     renderCatFiltros();

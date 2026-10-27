@@ -422,6 +422,17 @@
   .kit-price{ font-size:12px; opacity:0.55; margin-top:2px; }
 
 
+  .rec-list{ margin-top:22px; padding-top:18px; border-top:1px solid var(--line); }
+  .rec-title{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0 0 12px; }
+  .rec-item{ display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .rec-item:last-child{ border-bottom:0; }
+  .rec-art{ flex:0 0 84px; aspect-ratio:4/3; background:var(--panel); border:1px solid var(--line); overflow:hidden; }
+  .rec-art img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .rec-info{ flex:1; min-width:0; }
+  .rec-tag{ display:inline-block; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#1A1416; background:var(--gold); padding:2px 8px; margin-bottom:5px; }
+  .rec-help{ margin:18px 0 0; font-size:12.5px; opacity:.75; line-height:1.6; }
+  .rec-help a{ color:var(--gold-soft); }
+
   /* ---------- Estados ---------- */
   .estado{
     grid-column:1 / -1;
@@ -537,6 +548,8 @@
     padding:6px 12px; cursor:pointer;
   }
   .buscador button[hidden]{display:none;}
+  .conf-cta{ text-align:center; font-size:13.5px; opacity:.8; margin:4px 0 22px; }
+  .conf-cta a{ color:var(--gold-soft); }
   .ver-mas-wrap{ display:flex; justify-content:center; padding:0 0 44px; margin-top:-8px; }
   .ver-mas-wrap[hidden]{display:none;}
   .ver-mas{
@@ -631,6 +644,7 @@
     <div class="hero-cta">
       <a class="btn-solid" id="heroPromoBtn" href="#promociones">Ver promociones</a>
       <a class="btn-ghost" href="#catalogo" style="text-decoration:none;">Ver catálogo</a>
+      <a class="btn-ghost" href="#confesionario" style="text-decoration:none;">Confesionario de parejas</a>
     </div>
   </div>
 </section>
@@ -664,6 +678,7 @@
     <div class="cat-filters" id="catFilters"></div>
     <div class="grid" id="catGrid"></div>
     <div class="ver-mas-wrap" id="verMasWrap" hidden><button type="button" class="ver-mas" id="verMas">Ver más productos</button></div>
+    <p class="conf-cta">¿No saben por dónde empezar? <a href="#confesionario">Hagan el Confesionario de Parejas</a></p>
   </div>
 </section>
 
@@ -723,48 +738,67 @@ const experienciasBase = [
 // El Confesionario: reglas de situación → recomendación (no usa IA, responde al instante)
 const situaciones = [
   {
-    texto: "Llevamos 8 años juntos y queremos encender la chispa sin presiones",
+    texto: "Llevamos años juntos y queremos encender la chispa sin presiones",
     experiencia: "Noches de Reconexión",
     plan: [
-      "Aparten una noche sin pantallas ni pendientes — el ambiente importa más que el producto.",
+      "Aparten una noche sin pantallas ni pendientes: el ambiente importa más que el producto.",
       "Empiecen con algo sensorial y lento: masaje, respiración compartida, conversación sin agenda.",
-      "Dejen la 'exploración' como algo que surge, no que se planea de más."
+      "Dejen la exploración como algo que surge, no que se planea de más."
     ],
-    kit: "Aceite de Masaje en Vela",
-    precio: 58000
+    promo: "Kit Reconexión",
+    productos: ["Aceite de Masaje en Vela", "Set de Respiración Compartida", "Kit Sensorial"]
   },
   {
     texto: "Estamos empezando y queremos probar algo nuevo, pero con calma",
     experiencia: "Exploración Sutil",
     plan: [
-      "Hablen antes, no durante — acuerden una palabra para pausar si algo no se siente bien.",
-      "Elijan algo de intensidad baja para la primera vez; el objetivo es sentirse cómodos, no 'llegar a algo'.",
+      "Hablen antes, no durante: acuerden una palabra para pausar si algo no se siente bien.",
+      "Elijan algo de intensidad baja para la primera vez; el objetivo es sentirse cómodos, no llegar a algo.",
       "Revisen juntos después: qué gustó, qué no, sin juzgar."
     ],
-    kit: "Kit Introductorio para Dos",
-    precio: 79000
+    promo: "Kit Primera Vez para Dos",
+    productos: ["Gel Lubricante Base Agua 100ml", "Cartas Conectados", "Kit Sensorial"]
   },
   {
     texto: "Se acerca una fecha especial y queremos celebrarla distinto",
     experiencia: "Especial Aniversarios",
     plan: [
-      "Conviertan la fecha en una experiencia, no solo una cena — el ritual también comunica.",
+      "Conviertan la fecha en una experiencia, no solo una cena: el ritual también comunica.",
       "Usen algo que abra conversación antes de la noche, no solo después.",
-      "Cierren con un gesto que quede — algo que puedan recordar más allá de esa noche."
+      "Cierren con un gesto que quede, algo que puedan recordar más allá de esa noche."
     ],
-    kit: "Set Aniversario Edición Íntima",
-    precio: 129000
+    productos: ["Vibrador y Succionador Ohlala Rose", "Satisfyer Love Breeze", "Aceite de Masaje en Vela"]
   },
   {
     texto: "Queremos hablar del tema por primera vez, sin saber bien cómo empezar",
     experiencia: "Exploración Sutil",
     plan: [
-      "Empiecen por palabras, no por productos — una guía de preguntas baja la presión de 'proponer' algo.",
+      "Empiecen por palabras, no por productos: unas preguntas o un juego bajan la presión de proponer algo.",
       "Acuerden que cualquiera puede decir que no, sin que eso cierre la conversación para siempre.",
       "Vayan un paso a la vez; no hace falta resolver todo en una sola charla."
     ],
-    kit: "Tarjetas de Complicidad",
-    precio: 39000
+    productos: ["Cartas Conectados", "Uno Sex", "Kit Sensorial"]
+  },
+  {
+    texto: "Somos dos hombres y queremos romper el hielo con algo divertido",
+    experiencia: "Exploración Sutil",
+    plan: [
+      "Empiecen por el juego: reírse juntos es la mejor forma de bajar la guardia.",
+      "Tengan a mano un buen lubricante y un masaje para pasar de lo divertido a lo íntimo.",
+      "Hablen de lo que les gustó; la confianza se construye una noche a la vez."
+    ],
+    promo: "Kit Rompiendo el hielo",
+    productos: ["Triki Erótico Gay", "Gel Lubricante Base Agua 500ml"]
+  },
+  {
+    texto: "Quiero cuidar mi bienestar íntimo y conocerme mejor",
+    experiencia: "Exploración Sutil",
+    plan: [
+      "Conocerse es el primer paso: sin prisa, sin metas y sin comparaciones.",
+      "Cuiden la higiene de lo que usan: limpiar bien es parte del placer seguro.",
+      "Escuchen al cuerpo: si algo incomoda, se pausa y se prueba otra cosa."
+    ],
+    productos: ["Bolas Kegel Uva", "Lubricante Íntimo Piel Sensible 100 ml", "Limpiador de Juguetes Elixir 118ml"]
   }
 ];
 
@@ -1105,22 +1139,44 @@ function renderSituaciones(){
   });
 }
 
+function itemRecomendado(nombre, precio, imagen, mensaje, etiqueta){
+  return `
+    <div class="rec-item">
+      <div class="rec-art">${imagen ? `<img src="${esc(imagen)}" alt="${esc(nombre)}" loading="lazy" referrerpolicy="no-referrer">` : ""}</div>
+      <div class="rec-info">
+        ${etiqueta ? `<span class="rec-tag">${esc(etiqueta)}</span>` : ""}
+        <div class="kit-name">${esc(nombre)}</div>
+        <div class="kit-price">${precioTexto(precio)}</div>
+      </div>
+      <a class="btn-gold" data-wa href="${waURL(mensaje)}" target="_blank" rel="noopener">Pedir</a>
+    </div>`;
+}
+
 function mostrarResultado(s){
   const el = document.getElementById("resultado");
-  const mensaje = `Hola, hice el Confesionario de Parejas y me recomendó: ${s.kit}`;
+  const items = [];
+  const promo = s.promo && promociones.find(k => normalizar(k.nombre) === normalizar(s.promo));
+  if (promo){
+    items.push(itemRecomendado(promo.nombre, promo.precio, promo.imagen,
+      `Hola, hice el Confesionario de Parejas y quiero el kit: ${promo.nombre} (${precioTexto(promo.precio)})`, "Kit sugerido"));
+  }
+  let lista = (s.productos || [])
+    .map(n => productos.find(p => normalizar(p.nombre) === normalizar(n)))
+    .filter(p => p && !p.agotado);
+  if (!lista.length && !promo){
+    lista = productos.filter(p => !p.agotado && normalizar(p.experiencia) === normalizar(s.experiencia));
+  }
+  lista.slice(0, 3).forEach(p => items.push(itemRecomendado(p.nombre, p.precio, p.imagen,
+    `Hola, hice el Confesionario de Parejas y me interesa: ${p.nombre} (${precioTexto(p.precio)})`)));
+  const consulta = waURL(`Hola, hice el Confesionario de Parejas (${s.texto}). ¿Me ayudas a elegir?`);
   el.innerHTML = `
     <p class="r-eyebrow">Su plan sugerido</p>
     <h3>${s.experiencia}</h3>
     ${s.plan.map((paso, i) => `
       <div class="plan-step"><span class="n">0${i+1}</span><span>${paso}</span></div>
     `).join("")}
-    <div class="kit-line">
-      <div>
-        <div class="kit-name">${s.kit}</div>
-        <div class="kit-price">${formatoPrecio(s.precio)} · precio cliente</div>
-      </div>
-      <a class="btn-gold" data-wa href="${waURL(mensaje)}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
-    </div>
+    ${items.length ? `<div class="rec-list"><p class="rec-title">Para empezar</p>${items.join("")}</div>` : ""}
+    <p class="rec-help">¿Quieren que les ayudemos a elegir? <a data-wa href="${consulta}" target="_blank" rel="noopener">Escríbannos por WhatsApp</a>, con total discreción.</p>
   `;
   el.classList.add("visible");
   el.scrollIntoView({ behavior: "smooth", block: "nearest" });

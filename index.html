@@ -262,14 +262,14 @@
     flex-direction:column;
   }
   .card-art{
-    aspect-ratio:4/3;
+    aspect-ratio:4/3; overflow:hidden; min-height:0;
     background:
       radial-gradient(circle at 30% 30%, rgba(228,200,120,0.18), transparent 55%),
       radial-gradient(circle at 70% 70%, rgba(122,62,44,0.55), transparent 60%),
       var(--panel-2);
   }
   .card-art img{
-    width:100%; height:100%;
+    width:100%; height:100%; position:absolute; inset:0;
     object-fit:cover;
     display:block;
   }
@@ -471,6 +471,7 @@
     box-shadow:0 6px 22px rgba(0,0,0,0.5);
     transition:background 0.2s ease;
   }
+  @media (max-width:560px){ .wa-float{ right:12px; bottom:12px; padding:10px 14px; font-size:12px; } }
   .wa-float:hover{ background:var(--gold-soft); }
 
   /* ---------- Menos scroll (v2) ---------- */

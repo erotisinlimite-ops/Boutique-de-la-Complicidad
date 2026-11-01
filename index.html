@@ -657,6 +657,12 @@
   .cats-esp-grid a{ display:block; text-decoration:none; text-align:center; padding:14px 12px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--cream); font-size:13.5px; transition:.2s; }
   .cats-esp-grid a span{ display:block; color:var(--gold-soft); font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px; }
   .cats-esp-grid a:hover{ border-color:var(--gold); background:var(--panel-2); }
+  .cart-form{ padding:10px 22px 4px; display:grid; gap:8px; border-top:1px solid var(--line); }
+  .cart-form input,.cart-form select{ width:100%; background:var(--panel-2); color:var(--cream); border:1px solid var(--line); border-radius:8px; padding:11px 12px; font:inherit; font-size:14px; }
+  .cart-form input:focus,.cart-form select:focus{ outline:none; border-color:var(--gold); }
+  .cart-form .falta{ border-color:#D9738F; }
+  .cart-warn,.cart-err{ margin:0; font-size:12px; line-height:1.45; }
+  .cart-warn{ color:var(--gold-soft); } .cart-err{ color:#F0BBCB; }
 </style>
 </head>
 <body class="locked">
@@ -768,9 +774,16 @@
     <button type="button" class="cart-close" id="cartClose" aria-label="Cerrar">&times;</button>
   </div>
   <div class="cart-items" id="cartItems"></div>
+  <div class="cart-form" id="cartForm">
+    <input type="text" id="cfNombre" placeholder="Tu nombre" autocomplete="given-name" aria-label="Tu nombre">
+    <input type="text" id="cfBarrio" placeholder="Barrio" autocomplete="off" aria-label="Barrio">
+    <select id="cfMuni" aria-label="Municipio"><option value="">Municipio…</option><option>Medellín</option><option>Bello</option><option>Itagüí</option><option>Envigado</option><option>Sabaneta</option><option>La Estrella</option><option>Caldas</option><option>Copacabana</option><option>Girardota</option><option>Barbosa</option><option>Rionegro</option><option>Marinilla</option><option>El Retiro</option><option>La Ceja</option><option>El Carmen de Viboral</option><option>Guarne</option><option>San Vicente</option><option>El Santuario</option><option value="otro">Otro municipio u otra ciudad</option></select>
+    <p class="cart-warn" id="cfAviso" hidden>Por ahora entregamos en Medellín, el Valle de Aburrá y el oriente antioqueño. Escríbenos igual y te contamos si podemos llegar.</p>
+    <p class="cart-err" id="cfErr" hidden>Completa tu nombre, barrio y municipio para enviar el pedido.</p>
+  </div>
   <div class="cart-foot">
     <div class="cart-sum"><span>Total productos</span><strong id="cartTotal"></strong></div>
-    <p class="cart-note">El envío y la disponibilidad te los confirmamos por WhatsApp. Empaque neutro y facturación reservada.</p>
+    <p class="cart-note">La disponibilidad, el costo de envío y la dirección exacta te los confirmamos por WhatsApp. Empaque neutro y facturación reservada.</p>
     <a class="btn-solid cart-send" id="cartSend" data-wa href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
     <button type="button" class="cart-clear" id="cartClear">Vaciar pedido</button>
   </div>
@@ -1288,7 +1301,8 @@ function pintarCarrito(){
     </div>`).join("");
   document.getElementById("cartTotal").textContent = textoTotal();
   const lineas = carrito.map(i => `• ${i.cant} x ${i.nombre}` + (i.precio > 0 ? ` — ${formatoPrecio(i.precio * i.cant)}` : " — (precio por confirmar)"));
-  const msg = `Hola, quiero hacer este pedido:\n${lineas.join("\n")}\n\nTotal productos: ${textoTotal()}\n¿Me confirmas disponibilidad y envío?`;
+  const fv = datosEntrega();
+  const msg = `Hola, quiero hacer este pedido:\n${lineas.join("\n")}\n\nTotal productos: ${textoTotal()}\n\nNombre: ${fv.nombre}\nBarrio: ${fv.barrio}\nMunicipio: ${fv.muni}\n\n¿Me confirmas disponibilidad y envío?`;
   document.getElementById("cartSend").href = waURL(msg);
   if (n === 0) cerrarCarrito();
 }
@@ -1323,6 +1337,29 @@ document.getElementById("cartClose").addEventListener("click", cerrarCarrito);
 document.getElementById("cartOverlay").addEventListener("click", cerrarCarrito);
 document.getElementById("cartClear").addEventListener("click", () => { carrito = []; guardarCarrito(); pintarCarrito(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarCarrito(); });
+function datosEntrega(){
+  const g = id => (document.getElementById(id).value || "").trim();
+  const muni = g("cfMuni");
+  return { nombre: g("cfNombre"), barrio: g("cfBarrio"), muni: muni === "otro" ? "Otro (por confirmar)" : muni };
+}
+function guardarEntrega(){ try { localStorage.setItem("entregaBoutique", JSON.stringify({ n: cfNombre.value, b: cfBarrio.value, m: cfMuni.value })); } catch(e) {} }
+(function(){
+  try { const d = JSON.parse(localStorage.getItem("entregaBoutique") || "{}"); if (d.n) cfNombre.value = d.n; if (d.b) cfBarrio.value = d.b; if (d.m) cfMuni.value = d.m; } catch(e) {}
+  const refrescar = () => {
+    document.getElementById("cfAviso").hidden = cfMuni.value !== "otro";
+    ["cfNombre","cfBarrio","cfMuni"].forEach(id => { if (document.getElementById(id).value.trim()) document.getElementById(id).classList.remove("falta"); });
+    document.getElementById("cfErr").hidden = true;
+    guardarEntrega(); pintarCarrito();
+  };
+  ["cfNombre","cfBarrio"].forEach(id => document.getElementById(id).addEventListener("input", refrescar));
+  document.getElementById("cfMuni").addEventListener("change", refrescar);
+  document.getElementById("cartSend").addEventListener("click", e => {
+    const d = datosEntrega(); let falta = false;
+    [["cfNombre", d.nombre], ["cfBarrio", d.barrio], ["cfMuni", d.muni]].forEach(([id, v]) => { if (!v){ document.getElementById(id).classList.add("falta"); falta = true; } });
+    if (falta){ e.preventDefault(); document.getElementById("cfErr").hidden = false; }
+  });
+  document.getElementById("cfAviso").hidden = cfMuni.value !== "otro";
+})();
 pintarCarrito();
 
 // ---------- Aviso de promoción ----------

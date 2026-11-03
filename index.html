@@ -663,6 +663,8 @@
   .cart-form .falta{ border-color:#D9738F; }
   .cart-warn,.cart-err{ margin:0; font-size:12px; line-height:1.45; }
   .cart-warn{ color:var(--gold-soft); } .cart-err{ color:#F0BBCB; }
+  .cats-esp-ayuda{ text-align:center; margin-top:18px; font-size:14px; }
+  .cats-esp-ayuda a{ color:var(--gold-soft); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px; }
 </style>
 </head>
 <body class="locked">
@@ -749,8 +751,9 @@
 <section class="cats-esp" id="catalogos-especiales">
   <div class="wrap">
     <p class="section-title">Catálogos completos, con asesoría</p>
-    <p class="section-sub">¿Buscas algo más específico? Pide el catálogo que te interesa y te lo enviamos por WhatsApp, junto con una recomendación personalizada.</p>
+    <p class="section-sub" id="catsEspSub">¿Buscas algo más específico? Pide el catálogo que te interesa y te lo enviamos por WhatsApp, junto con una recomendación personalizada.</p>
     <div class="cats-esp-grid" id="catsEsp"></div>
+    <p class="cats-esp-ayuda"><a id="catsEspAyuda" href="#" target="_blank" rel="noopener" hidden>¿Prefieres asesoría personalizada? Escríbenos por WhatsApp</a></p>
   </div>
 </section>
 
@@ -1478,10 +1481,29 @@ async function iniciar(){
 
 iniciar();
 (function(){
-  const lista=[["Torsos y dildos realistas","torsos y dildos realistas"],["CamToyz","CamToyz"],["Estimulación clitorial","estimulación clitorial"],["Masturbadores","masturbadores"],["Lencería","lencería"],["Bondage","bondage"],["Lubricantes y cosméticos","lubricantes y cosméticos"],["Bienestar sexual","bienestar sexual"]];
-  const box=document.getElementById('catsEsp'); if(!box) return;
-  box.innerHTML=lista.map(([t,q])=>'<a target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent('Hola, quiero ver el catálogo de '+q)+'">'+t+'<span>Pedir por WhatsApp</span></a>').join('');
+  // Pega aquí el enlace de Drive de cada catálogo (Compartir > Cualquier persona con el enlace > Lector).
+  // Si un enlace queda vacío, ese botón abre WhatsApp para pedir el catálogo.
+  const CATALOGOS = [
+    { t: "Torsos y dildos realistas", q: "torsos y dildos realistas", link: "" },
+    { t: "CamToyz", q: "CamToyz", link: "" },
+    { t: "Estimulación clitorial", q: "estimulación clitorial", link: "" },
+    { t: "Masturbadores", q: "masturbadores", link: "" },
+    { t: "Lencería", q: "lencería", link: "" },
+    { t: "Bondage", q: "bondage", link: "" },
+    { t: "Lubricantes y cosméticos", q: "lubricantes y cosméticos", link: "" },
+    { t: "Bienestar sexual", q: "bienestar sexual", link: "" }
+  ];
+  const box = document.getElementById('catsEsp'); if (!box) return;
+  box.innerHTML = CATALOGOS.map(c => {
+    const href = c.link || ('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent('Hola, quiero ver el catálogo de ' + c.q));
+    return '<a target="_blank" rel="noopener" href="' + href + '">' + c.t + '<span>' + (c.link ? 'Ver catálogo' : 'Pedir por WhatsApp') + '</span></a>';
+  }).join('');
+  if (CATALOGOS.some(c => c.link)) {
+    const sub = document.getElementById('catsEspSub'); if (sub) sub.textContent = 'Explora el catálogo completo de cada categoría. Si quieres que te ayudemos a elegir, escríbenos.';
+    const ayuda = document.getElementById('catsEspAyuda'); if (ayuda){ ayuda.hidden = false; ayuda.href = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent('Hola, quiero asesoría para elegir un producto'); }
+  }
 })();
+
 </script>
 
 </body>

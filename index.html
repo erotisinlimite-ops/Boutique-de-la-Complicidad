@@ -14,16 +14,17 @@
 <meta property="og:locale" content="es_CO">
 <meta property="og:title" content="Boutique de la Complicidad">
 <meta property="og:description" content="Kits y promociones para parejas que quieren explorar con calma. Pedidos por WhatsApp. Solo mayores de 18 años.">
-<!-- Cuando tengas una imagen de portada (1200x630) en la carpeta img/, quita los comentarios de estas dos líneas
-     y cambia TU-USUARIO y TU-REPOSITORIO por los tuyos:
-<meta property="og:image" content="https://TU-USUARIO.github.io/TU-REPOSITORIO/img/portada.jpg">
+<meta property="og:url" content="https://erotisinlimite-ops.github.io/Boutique-de-la-Complicidad/">
+<meta property="og:image" content="https://erotisinlimite-ops.github.io/Boutique-de-la-Complicidad/images/og-portada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
--->
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B0A0C'/%3E%3Ctext x='32' y='44' font-size='38' text-anchor='middle' fill='%23C9A24C' font-family='Georgia,serif'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --onyx:#0B0A0C;
@@ -41,7 +42,7 @@
     margin:0;
     background:var(--onyx);
     color:var(--cream);
-    font-family:'Jost', sans-serif;
+    font-family:'Poppins', sans-serif;
     font-weight:400;
     -webkit-font-smoothing:antialiased;
   }
@@ -69,7 +70,7 @@
     padding:40px 32px 34px;
   }
   .age-box h2{
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     font-weight:600;
     font-size:26px;
     color:var(--gold-soft);
@@ -127,7 +128,7 @@
     margin:0 0 22px;
   }
   .hero h1{
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     font-weight:600;
     font-size:clamp(38px, 6vw, 64px);
     letter-spacing:0.01em;
@@ -158,7 +159,7 @@
   /* ---------- Secciones ---------- */
   .section-title{
     text-align:center;
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     font-weight:500;
     font-size:26px;
     color:var(--gold-soft);
@@ -195,9 +196,12 @@
     opacity:0.85;
   }
   .includes li::before{content:"+ "; color:var(--gold);}
+  .opcion-label{ display:block; font-size:13px; color:var(--cream); opacity:.85; margin:10px 0 4px; }
+  .opcion-select{ display:block; width:100%; margin-top:6px; padding:9px 10px; background:var(--panel-2); color:var(--cream);
+    border:1px solid var(--line); border-radius:0; font-family:inherit; font-size:14px; }
   .promo-note{ font-size:12px; opacity:0.72; margin:-6px 0 14px; }
   .price-old{
-    font-family:'Jost', sans-serif;
+    font-family:'Poppins', sans-serif;
     font-size:13px;
     opacity:0.72;
     text-decoration:line-through;
@@ -230,7 +234,7 @@
     border-color:var(--gold);
   }
   .exp-tab .exp-name{
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     font-size:19px;
     color:var(--gold-soft);
     margin:0 0 8px;
@@ -275,7 +279,7 @@
   }
   .card-body{ padding:18px 20px 22px; border-top:1px solid var(--line); flex:1; display:flex; flex-direction:column; }
   .card-name{
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     font-size:17px;
     color:var(--gold-soft);
     margin:0 0 6px;
@@ -289,8 +293,8 @@
     margin:0 0 16px;
   }
   .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; }
-  .price{ font-family:'Playfair Display', serif; font-size:17px; color:var(--cream); }
-  .price small{ font-family:'Jost', sans-serif; font-size:11px; opacity:0.72; display:block; }
+  .price{ font-family:'Lora', serif; font-size:17px; color:var(--cream); }
+  .price small{ font-family:'Poppins', sans-serif; font-size:11px; opacity:0.72; display:block; }
   .btn-gold{
     display:inline-flex;
     align-items:center;
@@ -390,7 +394,7 @@
     margin:0 0 14px;
   }
   .resultado h3{
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     font-size:21px;
     color:var(--gold-soft);
     margin:0 0 16px;
@@ -404,7 +408,7 @@
     opacity:0.92;
   }
   .plan-step .n{
-    font-family:'Playfair Display', serif;
+    font-family:'Lora', serif;
     color:var(--gold);
     flex-shrink:0;
   }
@@ -418,7 +422,7 @@
     flex-wrap:wrap;
     gap:14px;
   }
-  .kit-name{ font-family:'Playfair Display', serif; font-size:15.5px; color:var(--cream); }
+  .kit-name{ font-family:'Lora', serif; font-size:15.5px; color:var(--cream); }
   .kit-price{ font-size:13px; opacity:0.78; margin-top:2px; }
 
 
@@ -443,7 +447,7 @@
   }
   .cart-bar[hidden]{display:none;}
   .cart-count{ background:#1A1416; color:var(--gs); min-width:24px; height:24px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; font-size:13px; padding:0 6px; }
-  .cart-total{ font-family:'Playfair Display',serif; }
+  .cart-total{ font-family:'Lora',serif; }
   body.hay-pedido .wa-float{ display:none; }
   .cart-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:70; }
   .cart-panel{
@@ -453,13 +457,13 @@
   }
   @media (min-width:700px){ .cart-panel{ left:auto; right:24px; bottom:24px; width:420px; max-height:80vh; } }
   .cart-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 22px 12px; border-bottom:1px solid var(--line); }
-  .cart-head h2{ margin:0; font-family:'Playfair Display',serif; font-weight:500; font-size:21px; color:var(--gold-soft); }
+  .cart-head h2{ margin:0; font-family:'Lora',serif; font-weight:500; font-size:21px; color:var(--gold-soft); }
   .cart-close{ background:none; border:0; color:var(--gold-soft); font-size:30px; line-height:1; cursor:pointer; padding:0 6px; }
   .cart-items{ overflow-y:auto; padding:6px 22px; flex:1; }
   .cart-row{ display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
   .cart-row:last-child{ border-bottom:0; }
   .cart-info{ flex:1; min-width:0; }
-  .cart-name{ font-family:'Playfair Display',serif; font-size:15px; color:var(--cream); line-height:1.3; }
+  .cart-name{ font-family:'Lora',serif; font-size:15px; color:var(--cream); line-height:1.3; }
   .cart-unit{ font-size:13px; opacity:0.78; margin-top:2px; }
   .cart-qty{ display:flex; align-items:center; border:1px solid var(--line); }
   .cart-qty button{ background:none; border:0; color:var(--gold-soft); width:30px; height:30px; font-size:17px; cursor:pointer; }
@@ -468,7 +472,7 @@
   .cart-del:hover{ opacity:.9; }
   .cart-foot{ padding:14px 22px 20px; border-top:1px solid var(--line); background:var(--panel-2); }
   .cart-sum{ display:flex; justify-content:space-between; align-items:baseline; font-size:13px; margin-bottom:8px; }
-  .cart-sum strong{ font-family:'Playfair Display',serif; font-size:20px; color:var(--gold-soft); font-weight:500; }
+  .cart-sum strong{ font-family:'Lora',serif; font-size:20px; color:var(--gold-soft); font-weight:500; }
   .cart-note{ font-size:12.5px; opacity:0.78; line-height:1.5; margin:0 0 14px; }
   .cart-send{ display:block; text-align:center; text-decoration:none; width:100%; }
   .cart-clear{ display:block; margin:12px auto 0; background:none; border:0; color:var(--cream); opacity:0.78; font-size:13px; text-decoration:underline; cursor:pointer; }
@@ -696,8 +700,8 @@
   <div class="wrap">
     <p class="eyebrow">Erotismo Sin Límite</p>
     <h1>Boutique de<br>la Complicidad</h1>
-    <div class="desde"><span>Desde 2019</span><i></i><span>Since 2019</span></div>
-    <p>Un espacio pensado para parejas que quieren explorar con calma, sin ruido y sin apuro. Cada experiencia está curada, no exhibida.</p>
+    <div class="desde"><span>Desde 2019</span><i></i><span>Medellín</span></div>
+    <p>Un espacio pensado para parejas que quieren explorar con calma, sin ruido y sin apuro. Cada producto está elegido con cuidado, no solo exhibido.</p>
     <div class="hero-line"></div>
     <div class="hero-cta">
       <a class="btn-solid" id="heroPromoBtn" href="#promociones">Ver promociones</a>
@@ -841,7 +845,7 @@ const situaciones = [
       "Dejen la exploración como algo que surge, no que se planea de más."
     ],
     promo: "Kit Reconexión",
-    productos: ["Aceite de Masaje en Vela", "Set de Respiración Compartida", "Kit Sensorial"]
+    productos: ["Aceite de Masaje en Vela", "Cartas Conectados", "Set de Respiración Compartida"]
   },
   {
     texto: "Estamos empezando y queremos probar algo nuevo, pero con calma",
@@ -1061,7 +1065,7 @@ function cardProductoHTML(p){
         <h3 class="card-name">${esc(p.nombre)}</h3>
         <p class="card-desc">${esc(p.descripcion)}</p>
         <div class="card-foot">
-          <div class="price">${precioTexto(p.precio)}<small>precio cliente</small></div>
+          <div class="price">${precioTexto(p.precio)}</div>
           ${boton}
         </div>
       </div>
@@ -1078,17 +1082,23 @@ function renderPromos(){
   cont.innerHTML = promociones.map(k => {
     const tieneAntes = k.precioAntes > k.precio && k.precio > 0;
     const descuento = tieneAntes ? Math.round((1 - k.precio / k.precioAntes) * 100) : 0;
-    const mensaje = `Hola, quiero la promoción: ${k.nombre} (${precioTexto(k.precio)})`;
+    const conOpciones = normalizar(k.nombre).includes("elige");
+    const opciones = k.incluye.map(i => i.replace(/\s*\(.*?\)\s*/g, "").trim());
+    const base = k.nombre.split("·")[0].trim();
     return `
     <div class="card">
       ${arteHTML(k.imagen, k.nombre, descuento ? `-${descuento}%` : "")}
       <div class="card-body">
         <h3 class="card-name">${esc(k.nombre)}</h3>
-        <ul class="includes">${k.incluye.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+        ${conOpciones
+          ? `<label class="opcion-label">Elige una opción
+               <select class="opcion-select" data-opcion-de="${esc(base)}">${opciones.map(o => `<option>${esc(o)}</option>`).join("")}</select>
+             </label>`
+          : `<ul class="includes">${k.incluye.map(i => `<li>${esc(i)}</li>`).join("")}</ul>`}
         ${k.nota ? `<p class="promo-note">${esc(k.nota)}</p>` : ""}
         <div class="card-foot">
           <div class="price">${tieneAntes ? `<span class="price-old">${formatoPrecio(k.precioAntes)}</span>` : ""}${precioTexto(k.precio)}</div>
-          <button type="button" class="btn-gold" data-add data-nombre="${esc(k.nombre)}" data-precio="${k.precio || 0}">Agregar kit</button>
+          <button type="button" class="btn-gold" data-add ${conOpciones ? `data-base="${esc(base)}"` : ""} data-nombre="${esc(k.nombre)}" data-precio="${k.precio || 0}">${conOpciones ? "Agregar" : "Agregar kit"}</button>
         </div>
       </div>
     </div>`;
@@ -1139,13 +1149,21 @@ document.getElementById("verMasExp").addEventListener("click", () => {
 });
 
 // ---------- Catálogo por categoría ----------
+// Orden en que se muestran las categorías (lo de pareja primero; el cuidado íntimo al final).
+// Las categorías que no estén en la lista aparecen antes de las dos de cuidado.
+const ORDEN_CATEGORIAS = ["Ambiente", "Juegos de Mesa", "Lubricante", "Balas y Huevitos", "Para Hombres",
+  "Succionadores", "Estimulación Clitorial", "Doble Estimulación", "Bondage", "Cuidado de juguetes", "Cuidado íntimo"];
+function rangoCategoria(cat){
+  const i = ORDEN_CATEGORIAS.findIndex(c => normalizar(c) === normalizar(cat));
+  return i === -1 ? ORDEN_CATEGORIAS.length - 2.5 : i;
+}
 function calcularCategorias(){
   const vistas = new Map();
   productos.forEach(p => {
     const k = normalizar(p.categoria);
     if (k && !vistas.has(k)) vistas.set(k, p.categoria);
   });
-  return ["Todas", ...vistas.values()];
+  return ["Todas", ...[...vistas.values()].sort((a, b) => rangoCategoria(a) - rangoCategoria(b))];
 }
 
 function renderCatFiltros(){
@@ -1175,7 +1193,7 @@ function renderCatGrid(reiniciar = true){
   const cont = document.getElementById("catGrid");
   const q = normalizar(textoBusqueda).replace(/_/g, " ");
   let lista = categoriaActiva === "Todas"
-    ? productos
+    ? productos.map((p, i) => [p, i]).sort((a, b) => rangoCategoria(a[0].categoria) - rangoCategoria(b[0].categoria) || a[1] - b[1]).map(x => x[0])
     : productos.filter(p => normalizar(p.categoria) === normalizar(categoriaActiva));
   lista = lista.filter(p => coincide(p, q));
   if (!lista.length){
@@ -1319,7 +1337,12 @@ function cerrarCarrito(){ document.getElementById("cartOverlay").hidden = true; 
 document.addEventListener("click", e => {
   const add = e.target.closest("[data-add]");
   if (add){
-    const nombre = add.dataset.nombre, precio = parseInt(add.dataset.precio, 10) || 0;
+    let nombre = add.dataset.nombre;
+    const precio = parseInt(add.dataset.precio, 10) || 0;
+    if (add.dataset.base){
+      const sel = add.closest(".card").querySelector(".opcion-select");
+      if (sel) nombre = `${add.dataset.base} · ${sel.value}`;
+    }
     const ya = carrito.find(i => i.nombre === nombre);
     if (ya) ya.cant += 1; else carrito.push({ nombre, precio, cant: 1 });
     guardarCarrito(); pintarCarrito();

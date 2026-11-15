@@ -472,6 +472,7 @@
   .cart-del:hover{ opacity:.9; }
   .cart-foot{ padding:14px 22px 20px; border-top:1px solid var(--line); background:var(--panel-2); }
   .cart-sum{ display:flex; justify-content:space-between; align-items:baseline; font-size:13px; margin-bottom:8px; }
+  .cart-line{ display:flex; justify-content:space-between; font-size:13px; opacity:.85; margin-bottom:4px; }
   .cart-sum strong{ font-family:'Lora',serif; font-size:20px; color:var(--gold-soft); font-weight:500; }
   .cart-note{ font-size:12.5px; opacity:0.78; line-height:1.5; margin:0 0 14px; }
   .cart-send{ display:block; text-align:center; text-decoration:none; width:100%; }
@@ -887,8 +888,10 @@
     <p class="cart-err" id="cfErr" hidden>Completa tu nombre, barrio y municipio para enviar el pedido.</p>
   </div>
   <div class="cart-foot">
-    <div class="cart-sum"><span>Total productos</span><strong id="cartTotal"></strong></div>
-    <p class="cart-note">Te confirmamos por WhatsApp la disponibilidad, el domicilio y la dirección exacta. Pagas por Nequi o transferencia. Empaque neutro, trato discreto y un obsequio con tu compra.</p>
+    <div class="cart-line"><span>Productos</span><span id="cartSub"></span></div>
+    <div class="cart-line"><span>Domicilio</span><span id="cartDom"></span></div>
+    <div class="cart-sum"><span>Total a pagar</span><strong id="cartTotal"></strong></div>
+    <p class="cart-note">Te confirmamos por WhatsApp la disponibilidad y la dirección exacta. Pagas por Nequi o transferencia. Empaque neutro, trato discreto y un obsequio con tu compra.</p>
     <a class="btn-solid cart-send" id="cartSend" data-wa href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
     <button type="button" class="cart-clear" id="cartClear">Vaciar pedido</button>
   </div>
@@ -1433,10 +1436,13 @@ function pintarCarrito(){
       </div>
       <button type="button" class="cart-del" data-del="${idx}" aria-label="Eliminar">&times;</button>
     </div>`).join("");
-  document.getElementById("cartTotal").textContent = textoTotal();
+  const t = totalesPedido();
+  document.getElementById("cartSub").textContent = textoTotal();
+  document.getElementById("cartDom").textContent = t.dom;
+  document.getElementById("cartTotal").textContent = t.total;
   const lineas = carrito.map(i => `• ${i.cant} x ${i.nombre}` + (i.precio > 0 ? ` — ${formatoPrecio(i.precio * i.cant)}` : " — (precio por confirmar)"));
   const fv = datosEntrega();
-  const msg = `Hola, quiero hacer este pedido:\n${lineas.join("\n")}\n\nTotal productos: ${textoTotal()}\n\nNombre: ${fv.nombre}\nBarrio: ${fv.barrio}\nMunicipio: ${fv.muni}\n\n¿Me confirmas disponibilidad y envío?`;
+  const msg = `Hola, quiero hacer este pedido:\n${lineas.join("\n")}\n\nProductos: ${textoTotal()}\nDomicilio: ${t.dom}\nTotal a pagar: ${t.total}\n\nNombre: ${fv.nombre}\nBarrio: ${fv.barrio}\nMunicipio: ${fv.muni}\n\n¿Me confirmas disponibilidad y envío?`;
   document.getElementById("cartSend").href = waURL(msg);
   if (n === 0) cerrarCarrito();
 }
@@ -1476,6 +1482,19 @@ document.getElementById("cartClose").addEventListener("click", cerrarCarrito);
 document.getElementById("cartOverlay").addEventListener("click", cerrarCarrito);
 document.getElementById("cartClear").addEventListener("click", () => { carrito = []; guardarCarrito(); pintarCarrito(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarCarrito(); });
+// Suma el domicilio fijo (CONFIG.valorDomicilio). Si el municipio es "otro", queda por confirmar.
+function totalesPedido(){
+  const valor = Number(CONFIG.valorDomicilio) || 0;
+  const muniSel = (document.getElementById("cfMuni") || {}).value;
+  const porConfirmar = !valor || muniSel === "otro";
+  const dom = porConfirmar ? "Por confirmar" : formatoPrecio(valor);
+  const base = totalCarrito();
+  let total;
+  if (base <= 0) total = "Por confirmar";
+  else if (porConfirmar || sinPrecio()) total = formatoPrecio(base + (porConfirmar ? 0 : valor)) + " + por confirmar";
+  else total = formatoPrecio(base + valor);
+  return { dom, total };
+}
 function datosEntrega(){
   const g = id => (document.getElementById(id).value || "").trim();
   const muni = g("cfMuni");

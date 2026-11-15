@@ -555,6 +555,10 @@
   }
   .topnav a:hover, .topnav a.on{ color:var(--gold-soft); border-bottom-color:var(--gold); opacity:1; }
   .topnav a[hidden]{display:none;}
+  @media (max-width:560px){
+    .topnav{ gap:0; padding:0 6px; }
+    .topnav a{ padding:15px 8px 13px; font-size:11px; letter-spacing:0.1em; }
+  }
 
   .aviso{
     display:block; text-align:center; text-decoration:none;
